@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burak Çanoğlu | İlgi Alanlarım</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">BÇ</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Hakkında</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ozgecmis.html">Özgeçmiş</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sehrim.html">Şehrim</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="ilgi.html">İlgi Alanlarım</a></li>
+                    <li class="nav-item"><a class="nav-link" href="iletisim.html">İletişim</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-5">
+        <header class="text-center mb-5">
+            <h1>İlgi Alanlarım</h1>
+            <p class="text-muted">Süper Lig ve Premier Lig Puan Durumları</p>
+        </header>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">Süper Lig Puan Durumu</div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped mb-0" id="sl-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Takım</th>
+                                    <th>P</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="3" class="text-center">Veriler yükleniyor...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">Premier Lig Puan Durumu</div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped mb-0" id="pl-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Takım</th>
+                                    <th>P</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="3" class="text-center">Veriler yükleniyor...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-4 mt-5 border-top">
+        <p class="text-muted">&copy; 2026 Burak Çanoğlu. </p>
+    </footer>
+
+    <script>
+        async function getTRStandings() {
+    const tableBody = document.querySelector('#sl-table tbody');
+    
+    // Türkiye Süper Ligi ID'si: 4339
+    const url = 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4339&s=2025-2026';
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (!data.table) {
+            tableBody.innerHTML = "<tr><td colspan='3'>Lig verisi bulunamadı.</td></tr>";
+            return;
+        }
+
+        tableBody.innerHTML = ""; // Yükleniyor yazısını sil
+
+        // data.table içindeki TÜM takımları döner (slice kullanmıyoruz ki hepsi gelsin)
+        data.table.forEach(team => {
+            // Logo linkini düzeltiyoruz: preview ekleyerek daha hızlı yüklenmesini sağlarız
+            const teamLogo = team.strTeamBadge + "/preview";
+            
+            const row = `
+                <tr>
+                    <td>${team.intRank}</td>
+                    <td>
+                        <img src="${teamLogo}" width="25" height="25" class="me-2" onerror="this.src='https://via.placeholder.com/25?text=?'">
+                        <strong>${team.strTeam}</strong>
+                    </td>
+                    <td>${team.intPoints}</td>
+                </tr>`;
+            tableBody.innerHTML += row;
+        });
+
+    } catch (error) {
+        console.error("Hata:", error);
+        tableBody.innerHTML = "<tr><td colspan='3'>Bağlantı hatası!</td></tr>";
+    }
+}
+
+getTRStandings();
+
+async function fillPremierLeague() {
+    const tbody = document.querySelector('#pl-table tbody');
+    // TheSportsDB Premier Lig ID: 4328
+    const url = 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4328&s=2025-2026';
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.table) {
+            tbody.innerHTML = ""; // Yükleniyor yazısını sil
+            
+            data.table.forEach(team => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${team.intRank}</td>
+                        <td>
+                            
+                            <strong>${team.strTeam}</strong>
+                        </td>
+                        <td>${team.intPoints}</td>
+                    </tr>`;
+            });
+        }
+    } catch (error) {
+        console.error("PL Hatası:", error);
+        tbody.innerHTML = "<tr><td colspan='3'>Veri çekilemedi.</td></tr>";
+    }
+}
+
+// Fonksiyonu ateşle
+fillPremierLeague();
+
+
+    </script>
+
+</body>
+</html>
