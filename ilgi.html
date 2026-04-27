@@ -82,7 +82,6 @@
         async function getTRStandings() {
     const tableBody = document.querySelector('#sl-table tbody');
     
-    // Türkiye Süper Ligi ID'si: 4339
     const url = 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4339&s=2025-2026';
 
     try {
@@ -94,11 +93,11 @@
             return;
         }
 
-        tableBody.innerHTML = ""; // Yükleniyor yazısını sil
+        tableBody.innerHTML = ""; 
 
-        // data.table içindeki TÜM takımları döner (slice kullanmıyoruz ki hepsi gelsin)
+        
         data.table.forEach(team => {
-            // Logo linkini düzeltiyoruz: preview ekleyerek daha hızlı yüklenmesini sağlarız
+           
             const teamLogo = team.strTeamBadge + "/preview";
             
             const row = `
@@ -123,7 +122,7 @@ getTRStandings();
 
 async function fillPremierLeague() {
     const tbody = document.querySelector('#pl-table tbody');
-    // TheSportsDB Premier Lig ID: 4328
+    
     const url = 'https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4328&s=2025-2026';
 
     try {
@@ -131,7 +130,7 @@ async function fillPremierLeague() {
         const data = await response.json();
         
         if (data.table) {
-            tbody.innerHTML = ""; // Yükleniyor yazısını sil
+            tbody.innerHTML = ""; 
             
             data.table.forEach(team => {
                 tbody.innerHTML += `
@@ -151,7 +150,7 @@ async function fillPremierLeague() {
     }
 }
 
-// Fonksiyonu ateşle
+
 fillPremierLeague();
 
 
