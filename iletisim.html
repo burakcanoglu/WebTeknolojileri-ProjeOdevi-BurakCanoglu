@@ -31,29 +31,29 @@
                 <h3 class="mb-0">İletişim Formu</h3>
             </div>
             <div class="card-body p-4">
-                <form id="contactForm">
+                <form id="contactForm" action="iletisim_sonuc.php" method="POST">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label font-weight-bold">Adınız</label>
-                            <input type="text" v-model="formData.name" id="name" class="form-control" placeholder="Adınız">
+                            <input type="text" v-model="formData.name" id="name" name ="ad" class="form-control" placeholder="Adınız">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Soyadınız</label>
-                            <input type="text" v-model="formData.surname" id="surname" class="form-control" placeholder="Soyadınız">
+                            <input type="text" v-model="formData.surname" id="surname" name="soyad" class="form-control" placeholder="Soyadınız">
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">E-posta</label>
-                            <input type="email" v-model="formData.email" id="email" class="form-control" placeholder="mail@ornek.com">
+                            <input type="email" v-model="formData.email" id="email" name="email" class="form-control" placeholder="mail@ornek.com">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Doğum Tarihi</label>
-                            <input type="date" v-model="formData.birth" id="birth" class="form-control">
+                            <input type="date" v-model="formData.birth" id="birth" name="dogum" class="form-control">
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Şehir</label>
-                            <select v-model="formData.city" id="city" class="form-select">
+                            <select v-model="formData.city" id="city" name="sehir" class="form-select">
                                 <option value="">Şehir Seçiniz</option>
                                 <option value="Sakarya">Sakarya</option>
                                 <option value="Istanbul">İstanbul</option>
@@ -76,27 +76,27 @@
                         <div class="col-md-12 mb-3">
                             <label class="form-label d-block">İlgi Duyduğunuz Alanlar</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" v-model="formData.interests" value="Spor">
+                                <input class="form-check-input" type="checkbox" v-model="formData.interests" name="interests[]" value="Spor">
                                 <label class="form-check-label">Spor</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" v-model="formData.interests" value="Müzik">
+                                <input class="form-check-input" type="checkbox" v-model="formData.interests" name="interests[]" value="Müzik">
                                 <label class="form-check-label">Müzik</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" v-model="formData.interests" value="Teknoloji">
+                                <input class="form-check-input" type="checkbox" v-model="formData.interests" name="interests[]" value="Teknoloji">
                                 <label class="form-check-label">Teknoloji</label>
                             </div>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Dosya Eki (Opsiyonel)</label>
-                            <input type="file" class="form-control">
+                            <input type="file" class="form-control" name="dosya">
                         </div>
 
                         <div class="col-12 mb-4">
                             <label class="form-label">Mesajınız</label>
-                            <textarea v-model="formData.message" id="message" class="form-control" rows="3"></textarea>
+                            <textarea v-model="formData.message" id="message" name="mesaj" class="form-control" rows="3"></textarea>
                         </div>
                     </div>
 
@@ -110,6 +110,13 @@
                             <button type="button" @click="validateVueJS" class="btn btn-success w-100">
                                 Vue.js ile Denetle
                             </button>
+                        </div>
+
+                        <div class="col-12">
+                           <button type="submit" class="btn btn-success w-100">
+                              Gönder
+                           </button>
+                          
                         </div>
                         <div class="col-12">
                             <button type="reset" class="btn btn-outline-secondary w-50">Temizle</button>
